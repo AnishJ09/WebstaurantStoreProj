@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -118,11 +119,16 @@ public class ShoppingCartTest {
 
 			emptyCartButton.click();
 
-			WebElement elementText = fluentWait.until(ExpectedConditions
+			// After performing actions to empty the cart
+			WebElement emptyCartMessage = fluentWait.until(ExpectedConditions
 					.elementToBeClickable(By.xpath("//*[@id='main']/div[1]/div[1]/div[1]/div[1]/div[2]/p[1]")));
+			String actualMessage = emptyCartMessage.getText();
+			String expectedMessage = "Your cart is empty.";
 
-			String text = elementText.getText();
-			System.out.println("Text content: " + text);
+			Assert.assertEquals(expectedMessage, actualMessage);
+
+			// If the assertion fails, the following code won't be executed.
+			System.out.println("Validation passed. The cart is empty: " + actualMessage);
 
 		} finally {
 			driver.quit();
